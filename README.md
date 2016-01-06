@@ -1,5 +1,7 @@
 # shell whisperer
 
+[![Build Status](https://travis-ci.org/maxjacobson/shell_whisperer.svg)](https://travis-ci.org/maxjacobson/shell_whisperer)
+
 This is a very small library to provide a wrapper around Ruby's backtick thing,
 where you can run shell commands.
 
