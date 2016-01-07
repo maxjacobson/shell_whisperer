@@ -23,8 +23,8 @@ describe ShellWhisperer do
         begin
           subject
         rescue ShellWhisperer::CommandFailed => e
-          expect(e.original_command).to eq 'fafa'
-          expect(e.original_message).to match /fafa/
+          expect(e.original_command).to eq "fafa"
+          expect(e.original_message).to match(/fafa/)
           expect(e.exit_code).to eq 127
           failed = true
         end
