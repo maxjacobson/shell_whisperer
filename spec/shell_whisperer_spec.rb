@@ -17,6 +17,20 @@ describe ShellWhisperer do
       it "should fail" do
         expect { subject }.to raise_error(ShellWhisperer::CommandFailed, /fafa/)
       end
+
+      it "should expose information about what went wrong" do
+        failed = false
+        begin
+          subject
+        rescue ShellWhisperer::CommandFailed => e
+          expect(e.original_command).to eq 'fafa'
+          expect(e.original_message).to match /fafa/
+          expect(e.exit_code).to eq 127
+          failed = true
+        end
+
+        expect(failed).to be true
+      end
     end
   end
 end
