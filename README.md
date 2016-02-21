@@ -23,11 +23,46 @@ Or install it yourself as:
 
 ## Usage
 
+Happy path (the command succeeds and outputs something):
+
 ```ruby
 ShellWhisperer.run "ls" #=> "README.md\n"
 ShellWhisperer.run "cat README.md" #=> "Content of README.md\n"
-ShellWhisperer.run "cat README.dm" #=> ShellWhisperer::CommandFailed exception with message "cat: README.dm: No such file or directory"
 ```
+
+Sad path (the command fails and prints an error):
+
+```ruby
+begin
+  ShellWhisperer.run "cat README.dm"
+rescue ShellWhisperer::CommandFailed => e
+  e #=> #<ShellWhisperer::CommandFailed: Attempted to run "cat README.dm" but the shell reported error: "cat: README.dm: No such file or directory" and exited with exit code 1.>
+	e.original_command #=> "cat README.dm"
+	e.original_message #=> "cat README.dm: No such file or directory \n"
+	e.exit_code #=> 1
+end
+```
+
+The goal is that you have a nice way of capturing output of a command while also
+having a nice way of knowing why something failed, if it failed.
+
+Here's a caveat:
+
+```ruby
+ShellWhisperer.run("cat README.md | wc -l").to_i #=> 69
+ShellWhisperer.run("cat README.dm | wc -l").to_i #=> 0
+```
+
+What!? Shouldn't the second one have failed, because the `README.dm` file does
+not exist? Well, maybe, but it pipes its output to `wc`, and `wc` succeeds, so
+ShellWhisperer thinks the whole thing succeeded. For this reason, it might make
+more sense to write this example like:
+
+```ruby
+ShellWhisperer.run("cat README.dm").each_line.count
+```
+
+Which will fail in the desired way.
 
 ## Development
 
