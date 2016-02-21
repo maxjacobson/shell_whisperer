@@ -37,9 +37,9 @@ begin
   ShellWhisperer.run "cat README.dm"
 rescue ShellWhisperer::CommandFailed => e
   e #=> #<ShellWhisperer::CommandFailed: Attempted to run "cat README.dm" but the shell reported error: "cat: README.dm: No such file or directory" and exited with exit code 1.>
-	e.original_command #=> "cat README.dm"
-	e.original_message #=> "cat README.dm: No such file or directory \n"
-	e.exit_code #=> 1
+  e.original_command #=> "cat README.dm"
+  e.original_message #=> "cat README.dm: No such file or directory \n"
+  e.exit_code #=> 1
 end
 ```
 
